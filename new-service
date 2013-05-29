@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+var util = require('util'),
+  fs = require('fs'),
+  path = require('path'),
+  _ = require('underscore'),
+  argv = require('optimist').argv,
+  mustache = require('mustache');
+
+var L = console.log,
+    D = function(o) { L(util.inspect(o)); },
+    F = function(s) { return util.format.apply(null, arguments); },
+    K = function(o) { return Object.keys(o) },
+    A = function(args) { return [].slice.call(args); };
+
+/*
+
+env NODE_BIN_DIR="basename `which node`"
+env NODE_PATH=""
+env APPLICATION_DIRECTORY="/data/apps/<name>"
+env APPLICATION_START="app.js"
+env LOG=""
+
+*/
+
+function getRuntime() {
+  return {
+    NODE_BIN_DIR: process.execPath,
+    NODE_PATH: process.env['NODE_PATH']
+  }
+}
+
+function compile(tpl, config) {
+  var txt = tpl;
+  _.each(config, function(val, key) {
+    txt = txt.replace('{{'+key+'}}', val);
+  });
+  return txt;
+}
+
+if (!module.parent) {
+  var config = getRuntime();
+  var tpl = fs.readFileSync('./upstart-forever.tpl', 'utf8');
+  config['APPLICATION_DIRECTORY'] = path.resolve(argv.d);
+  config['APPLICATION_START'] = argv.s || 'app.js';
+  config['LOG'] = argv.l || F('/var/log/forever/%s.log', appName);
+  var appName = path.basename(config['APPLICATION_DIRECTORY']);
+  var txt = compile(tpl, config);
+  
+  fs.writeFile(F('./scripts/%s.config', appName), txt, function(err, result) {
+    L(A(arguments));
+  });
+} 

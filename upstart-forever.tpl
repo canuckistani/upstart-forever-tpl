@@ -41,12 +41,12 @@ expect fork
 # Log file path.
 # env LOG="/var/log/my-application.log"
  
-env NODE_BIN_DIR=""
-env NODE_PATH=""
-env APPLICATION_DIRECTORY=""
-env APPLICATION_START=""
-env LOG=""
- 
+env NODE_BIN_DIR="{{NODE_BIN_DIR}}"
+env NODE_PATH="{{NODE_PATH}}"
+env APPLICATION_DIRECTORY="{{APPLICATION_DIRECTORY}}"
+env APPLICATION_START="{{APPLICATION_START}}"
+env LOG="{{LOG}}"
+
 script
     # Add the node executables to the path, which includes Forever if it is
     # installed globally, which it should be.
