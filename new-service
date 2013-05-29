@@ -53,7 +53,7 @@ if (!module.parent) {
   var appName = path.basename(config['APPLICATION_DIRECTORY']);
   var txt = compile(tpl, config);
   
-  var outFile = F('./scripts/%s.config', appName);
+  var outFile = F('./scripts/%s.conf', appName);
   fs.writeFile(outFile, txt, function(err, result) {
     L('wrote %s', outFile);
   });
