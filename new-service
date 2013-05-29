@@ -3,9 +3,7 @@
 var util = require('util'),
   fs = require('fs'),
   path = require('path'),
-  _ = require('underscore'),
-  argv = require('optimist').argv,
-  mustache = require('mustache');
+  _ = require('underscore');
 
 var L = console.log,
     D = function(o) { L(util.inspect(o)); },
@@ -23,6 +21,7 @@ env LOG=""
 
 */
 
+/* sniff around the runtime */
 function getRuntime() {
   return {
     NODE_BIN_DIR: process.execPath,
@@ -30,6 +29,7 @@ function getRuntime() {
   }
 }
 
+/* dirty template interpolation */
 function compile(tpl, config) {
   var txt = tpl;
   _.each(config, function(val, key) {
@@ -39,6 +39,12 @@ function compile(tpl, config) {
 }
 
 if (!module.parent) {
+
+  var argv = require('optimist')
+    .usage('new-service -d <app directory> -s app.js -l <logfile path>');
+    .demand([d])
+    .argv;
+
   var config = getRuntime();
   var tpl = fs.readFileSync('./upstart-forever.tpl', 'utf8');
   config['APPLICATION_DIRECTORY'] = path.resolve(argv.d);
@@ -47,7 +53,8 @@ if (!module.parent) {
   var appName = path.basename(config['APPLICATION_DIRECTORY']);
   var txt = compile(tpl, config);
   
-  fs.writeFile(F('./scripts/%s.config', appName), txt, function(err, result) {
-    L(A(arguments));
+  var outFile = F('./scripts/%s.config', appName);
+  fs.writeFile(outFile, txt, function(err, result) {
+    L('wrote %s', outFile);
   });
 } 
