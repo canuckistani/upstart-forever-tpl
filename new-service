@@ -41,7 +41,7 @@ function compile(tpl, config) {
 if (!module.parent) {
 
   var argv = require('optimist')
-    .usage('new-service -d <app directory> -s app.js -l <logfile path>');
+    .usage('new-service -d <app directory> -s app.js -l <logfile path>')
     .demand([d])
     .argv;
 
