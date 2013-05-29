@@ -42,7 +42,7 @@ if (!module.parent) {
 
   var argv = require('optimist')
     .usage('new-service -d <app directory> -s app.js -l <logfile path>')
-    .demand([d])
+    .demand(['d'])
     .argv;
 
   var config = getRuntime();
