@@ -20,6 +20,7 @@ Once you've generated a config file:
 
 ### Requirements
 
+* Ubuntu ( needs upstart )
 * node.js & npm
 * underscore & optimist
 * NODE_PATH must be set. To work around this, try something like:
