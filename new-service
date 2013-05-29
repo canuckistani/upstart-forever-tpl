@@ -47,10 +47,12 @@ if (!module.parent) {
 
   var config = getRuntime();
   var tpl = fs.readFileSync('./upstart-forever.tpl', 'utf8');
-  config['APPLICATION_DIRECTORY'] = path.resolve(argv.d);
-  config['APPLICATION_START'] = argv.s || 'app.js';
-  config['LOG'] = argv.l || F('/var/log/forever/%s.log', appName);
+  var appDir = path.resolve(argv.d);
+  config['APPLICATION_DIRECTORY'] = appDir;
   var appName = path.basename(config['APPLICATION_DIRECTORY']);
+  config['APPLICATION_START'] = argv.s || 'app.js';
+  config['LOG'] = argv.l || F('%s/%s.log', appDir, appName);
+  
   var txt = compile(tpl, config);
   
   var outFile = F('./scripts/%s.conf', appName);
