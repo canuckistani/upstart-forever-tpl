@@ -14,6 +14,7 @@ Based on this [recipe](http://www.exratione.com/2013/02/nodejs-and-forever-as-a-
       -l (log file) [optional, default: /$appdir/$appname/$appname.log]
 
 Once you've generated a config file:
+
 1. sudo cp ./scripts/appname.conf /etc/init/
 2. sudo service appname start
 3. forever list
